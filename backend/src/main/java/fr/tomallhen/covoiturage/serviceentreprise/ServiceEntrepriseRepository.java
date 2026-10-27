@@ -1,4 +1,6 @@
 package fr.tomallhen.covoiturage.serviceentreprise;
 
-public interface ServiceEntrepriseRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ServiceEntrepriseRepository extends JpaRepository<ServiceEntreprise, Long> {
 }
