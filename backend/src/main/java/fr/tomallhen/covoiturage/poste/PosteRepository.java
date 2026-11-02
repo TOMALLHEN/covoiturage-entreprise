@@ -1,4 +1,6 @@
 package fr.tomallhen.covoiturage.poste;
 
-public interface PosteRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PosteRepository extends JpaRepository<Poste, Long> {
 }
