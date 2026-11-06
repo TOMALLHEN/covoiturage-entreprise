@@ -1,4 +1,6 @@
 package fr.tomallhen.covoiturage.horaire;
 
-public interface HoraireRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface HoraireRepository extends JpaRepository<Horaire, Long> {
 }
