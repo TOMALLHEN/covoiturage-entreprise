@@ -30,7 +30,9 @@ public class SecurityConfig {
                         "/api/services",
                         "/api/services/**",
                         "/api/postes",
-                        "/api/postes/**"
+                        "/api/postes/**",
+                        "/api/horaires",
+                        "/api/horaires/**"
                 ))
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(
@@ -55,7 +57,9 @@ public class SecurityConfig {
                                 "/api/services",
                                 "/api/services/**",
                                 "/api/postes",
-                                "/api/postes/**"
+                                "/api/postes/**",
+                                "/api/horaires",
+                                "/api/horaires/**"
                         )
                         .hasAnyRole("SALARIE", "ADMIN")
 
@@ -63,7 +67,9 @@ public class SecurityConfig {
                                 "/api/services",
                                 "/api/services/**",
                                 "/api/postes",
-                                "/api/postes/**"
+                                "/api/postes/**",
+                                "/api/horaires",
+                                "/api/horaires/**"
                         )
                         .hasRole("ADMIN")
 
