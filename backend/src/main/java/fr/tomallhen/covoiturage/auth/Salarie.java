@@ -1,9 +1,14 @@
-package fr.tomallhen.covoiturage.salarie;
+package fr.tomallhen.covoiturage.auth;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ArrayList;
+import fr.tomallhen.covoiturage.poste.Poste;
+import fr.tomallhen.covoiturage.horaire.Horaire;
+import fr.tomallhen.covoiturage.vehicule.Vehicule;
+import fr.tomallhen.covoiturage.trajet.Trajet;
+import fr.tomallhen.covoiturage.participation.Participation;
 
 @Entity
 @Table(name = "salaries")
