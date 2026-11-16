@@ -9,7 +9,9 @@ public record SalarieResponse(
     String email,
     String role,
     String adresseDomicile,
-    LocalDateTime creeLe
+    LocalDateTime creeLe,
+    Long idPoste,
+    Long idHoraire
 ) {
 
     public static SalarieResponse from(Salarie salarie) {
@@ -20,7 +22,9 @@ public record SalarieResponse(
                 salarie.getEmail(),
                 salarie.getRole(),
                 salarie.getAdresseDomicile(),
-                salarie.getCreeLe()
+                salarie.getCreeLe(),
+                salarie.getPoste().getId(),
+                salarie.getHoraire() == null ? null : salarie.getHoraire().getId()
         );
     }
 }

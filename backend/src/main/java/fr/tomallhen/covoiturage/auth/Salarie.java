@@ -61,24 +61,28 @@ public class Salarie {
     public Salarie() {
     }
 
-
     public Long getIdSalarie() {
+
         return idSalarie;
     }
 
-    public void setIdSalarie(Long idSalarie) {
+    public void setIdSalarie(Long idSalarie)
+    {
         this.idSalarie = idSalarie;
     }
 
-    public String getNom() {
+    public String getNom()
+    {
         return nom;
     }
 
-    public void setNom(String nom) {
+    public void setNom(String nom)
+    {
         this.nom = nom;
     }
 
-    public String getPrenom() {
+    public String getPrenom()
+    {
         return prenom;
     }
 
@@ -124,5 +128,21 @@ public class Salarie {
 
     public void setCreeLe(LocalDateTime creeLe) {
         this.creeLe = creeLe;
+    }
+
+    public Poste getPoste() {
+        return poste;
+    }
+
+    public void setPoste(Poste poste) {
+        this.poste = poste;
+    }
+
+    public Horaire getHoraire() {
+        return horaire;
+    }
+
+    public void setHoraire(Horaire horaire) {
+        this.horaire = horaire;
     }
 }
