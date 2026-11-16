@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.List;
 
@@ -38,7 +39,8 @@ public class PosteService {
     public PosteResponse creer(PosteRequest request) {
         ServiceEntreprise service = trouverService(request.idService());
         Poste poste = new Poste(request.nom().strip(), service);
-        return PosteResponse.from(posteRepository.save(poste));
+
+        return enregistrer(poste);
     }
 
     @Transactional
@@ -49,12 +51,36 @@ public class PosteService {
         poste.setNom(request.nom().strip());
         poste.setServiceEntreprise(service);
 
-        return PosteResponse.from(poste);
+        return enregistrer(poste);
     }
 
     @Transactional
     public void supprimer(Long id) {
-        posteRepository.delete(trouverPoste(id));
+        Poste poste = trouverPoste(id);
+
+        try {
+            posteRepository.delete(poste);
+            posteRepository.flush();
+        } catch (DataIntegrityViolationException exception) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Ce poste est encore utilisé et ne peut pas être supprimé",
+                    exception
+            );
+        }
+    }
+
+    private PosteResponse enregistrer(Poste poste) {
+        try {
+            return PosteResponse.from(posteRepository.saveAndFlush(poste));
+        } catch (DataIntegrityViolationException exception) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Enregistrement impossible : vérifier les doublons "
+                            + "de nom dans le service et les données liées",
+                    exception
+            );
+        }
     }
 
     private Poste trouverPoste(Long id) {
