@@ -40,7 +40,8 @@ public class SecurityConfig {
                         "/api/trajets",
                         "/api/trajets/**",
                         "/api/participations",
-                        "/api/participations/**"
+                        "/api/participations/**",
+                        "/api/auth/inscription"
                 ))
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(
@@ -116,6 +117,12 @@ public class SecurityConfig {
                         )
 
                         .hasAnyRole("SALARIE", "ADMIN")
+
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/api/auth/inscription"
+                        )
+                        .permitAll()
 
                         .anyRequest().denyAll()
                 )
