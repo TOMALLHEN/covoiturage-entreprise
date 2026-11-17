@@ -8,11 +8,9 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
@@ -97,8 +95,8 @@ public class SecurityConfig {
                         .requestMatchers(
                                 HttpMethod.PUT,
                                 "/api/salaries/*/affectation"
-                                )
-                                .hasRole("ADMIN")
+                        )
+                        .hasRole("ADMIN")
 
                         .requestMatchers(
                                 HttpMethod.GET,
@@ -145,17 +143,9 @@ public class SecurityConfig {
     }
 
     @Bean
-    UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
-        var admin = User.withUsername("admin@covoiturage.test")
-                .password(passwordEncoder.encode("AdminDev123!"))
-                .roles("ADMIN")
-                .build();
-
-        var salarie = User.withUsername("salarie@covoiturage.test")
-                .password(passwordEncoder.encode("SalarieDev123!"))
-                .roles("SALARIE")
-                .build();
-
-        return new InMemoryUserDetailsManager(admin, salarie);
+    UserDetailsService userDetailsService(
+            SalarieRepository salarieRepository
+    ) {
+        return new SalarieUserDetailsService(salarieRepository);
     }
 }
