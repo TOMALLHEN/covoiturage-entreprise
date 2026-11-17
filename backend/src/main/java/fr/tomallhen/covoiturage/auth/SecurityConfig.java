@@ -94,6 +94,12 @@ public class SecurityConfig {
                         .hasAnyRole("SALARIE", "ADMIN")
 
                         .requestMatchers(
+                                HttpMethod.PUT,
+                                "/api/salaries/*/affectation"
+                                )
+                                .hasRole("ADMIN")
+
+                        .requestMatchers(
                                 HttpMethod.GET,
                                 "/api/salaries",
                                 "/api/salaries/*"
@@ -108,8 +114,9 @@ public class SecurityConfig {
                                 "/api/participations",
                                 "/api/participations/**"
                         )
+
                         .hasAnyRole("SALARIE", "ADMIN")
-                        
+
                         .anyRequest().denyAll()
                 )
                 .exceptionHandling(exception -> exception

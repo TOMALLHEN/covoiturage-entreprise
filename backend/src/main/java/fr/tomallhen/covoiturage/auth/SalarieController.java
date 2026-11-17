@@ -46,4 +46,12 @@ public class SalarieController {
                 principal.getName()
         );
     }
+
+    @PutMapping("/{id}/affectation")
+    public SalarieResponse modifierAffectation(
+            @PathVariable Long id,
+            @Valid @RequestBody SalarieAffectationRequest request
+    ) {
+        return salarieService.modifierAffectation(id, request);
+    }
 }

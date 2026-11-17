@@ -39,4 +39,14 @@ public class SalarieService {
                 "Modification du profil connecté à implémenter"
         );
     }
+
+    public SalarieResponse modifierAffectation(
+            Long id,
+            SalarieAffectationRequest request
+    ) {
+        throw new ResponseStatusException(
+                HttpStatus.NOT_IMPLEMENTED,
+                "Modification de l'affectation à implémenter"
+        );
+    }
 }
