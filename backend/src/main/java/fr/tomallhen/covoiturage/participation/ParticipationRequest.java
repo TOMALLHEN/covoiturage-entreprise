@@ -1,4 +1,13 @@
 package fr.tomallhen.covoiturage.participation;
 
-public record ParticipationRequest() {
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
+public record ParticipationRequest(
+
+    @NotNull
+    @Positive
+    Long idTrajet
+
+) {
 }
