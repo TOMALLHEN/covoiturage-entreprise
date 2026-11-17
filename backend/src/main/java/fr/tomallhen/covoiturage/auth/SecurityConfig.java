@@ -32,7 +32,15 @@ public class SecurityConfig {
                         "/api/postes",
                         "/api/postes/**",
                         "/api/horaires",
-                        "/api/horaires/**"
+                        "/api/horaires/**",
+                        "/api/salaries",
+                        "/api/salaries/**",
+                        "/api/vehicules",
+                        "/api/vehicules/**",
+                        "/api/trajets",
+                        "/api/trajets/**",
+                        "/api/participations",
+                        "/api/participations/**"
                 ))
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(
@@ -73,6 +81,35 @@ public class SecurityConfig {
                         )
                         .hasRole("ADMIN")
 
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/salaries/me"
+                        )
+                        .hasAnyRole("SALARIE", "ADMIN")
+
+                        .requestMatchers(
+                                HttpMethod.PUT,
+                                "/api/salaries/me"
+                        )
+                        .hasAnyRole("SALARIE", "ADMIN")
+
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/salaries",
+                                "/api/salaries/*"
+                        )
+                        .hasRole("ADMIN")
+
+                        .requestMatchers(
+                                "/api/vehicules",
+                                "/api/vehicules/**",
+                                "/api/trajets",
+                                "/api/trajets/**",
+                                "/api/participations",
+                                "/api/participations/**"
+                        )
+                        .hasAnyRole("SALARIE", "ADMIN")
+                        
                         .anyRequest().denyAll()
                 )
                 .exceptionHandling(exception -> exception
