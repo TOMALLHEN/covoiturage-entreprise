@@ -122,6 +122,12 @@ public class SecurityConfig {
                         )
                         .permitAll()
 
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/classement"
+                        )
+                        .hasAnyRole("SALARIE", "ADMIN")
+
                         .anyRequest().denyAll()
                 )
                 .exceptionHandling(exception -> exception

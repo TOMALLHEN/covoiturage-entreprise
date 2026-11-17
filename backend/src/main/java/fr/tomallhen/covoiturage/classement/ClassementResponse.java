@@ -1,4 +1,9 @@
 package fr.tomallhen.covoiturage.classement;
 
-public class ClassementResponse {
+public record ClassementResponse(
+        Long idSalarie,
+        String nom,
+        String prenom,
+        long nombreCovoiturages
+) {
 }
