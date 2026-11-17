@@ -182,6 +182,5 @@ public class Trajet {
     }
 
     public void setVehicule(Vehicule vehicule) {
-        this.vehicule = vehicule;
-    }
+        this.vehicule = vehicule;}
 }
