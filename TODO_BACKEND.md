@@ -1,141 +1,78 @@
-# Backend — passage de relais
+# Backend — reprise après les derniers ajouts
 
-Travail sur la branche `allan`.
-Créer la branche `tom` depuis `allan` pour reprendre.
+Travail disponible sur `allan`.
+Fusionner `allan` dans la branche de reprise avant de continuer.
 
-## Stack
+## Nouveaux ajouts
 
-- Java 21, Spring Boot, Spring Security.
-- PostgreSQL dans Docker.
-- Maven Wrapper.
-- Swagger pour tester l’API.
+- Salariés, véhicules, trajets et participations — entités, repositories et DTO complétés.
+- Contrôleurs et méthodes de service préparés.
+- Route admin pour modifier le poste et l’horaire d’un salarié.
+- Classement — DTO, controller et service préparés.
+- Droits des nouvelles routes configurés.
+- Comptes en mémoire remplacés par la recherche des salariés en BDD.
+- Conflits des postes gérés avec HTTP 409(amélioration suggérer par Julien).
+- Participation unique par couple salarié/trajet.
 
-## Organisation des fichiers
+## Fichiers utiles
 
-Même fonctionnement dans les packages `serviceentreprise`, `poste` et `horaire`.
+- `*Request.java` — données reçues et validation.
+- `*Response.java` — données renvoyées.
+- `*Repository.java` — recherches en BDD.
+- `*Controller.java` — routes et appels aux services.
+- `*Service.java` — logique métier à compléter.
+- `SalarieUserDetailsService.java` — chargement du compte depuis la BDD.
+- `SecurityConfig.java` — authentification et droits, profil dev.
 
-- `Nom.java` — entité JPA, champs et relations avec les autres entités.
-- `NomRepository.java` — accès à la BDD, recherche, enregistrement et suppression.
-- `NomRequest.java` — données reçues en POST/PUT et contraintes de validation.
-- `NomResponse.java` — données renvoyées au client.
-- `NomService.java` — logique métier, CRUD et vérification des éléments existants.
-- `NomController.java` — routes GET, POST, PUT et DELETE.
+## À implémenter par Tom
 
-Autres fichiers.
+Les nouveaux services renvoient actuellement HTTP 501.
 
-- `auth/SecurityConfig.java` — droits d’accès et comptes temporaires de développement.
-- `auth/OpenApiConfig.java` — documentation Swagger et bouton Authorize.
-- `application.properties` — configuration de l’application et connexion BDD.
-- `compose.yaml` — lancement de PostgreSQL dans Docker.
-- `pom.xml` — dépendances et configuration Maven.
-- `docs/` — MCD, MLD et logigramme.
+- `AuthService` — inscription, e-mail unique, BCrypt, rôle SALARIE et affectations.
+- `SalarieService` — consultation, profil et affectation poste/horaire.
+- `VehiculeService` — CRUD et contrôle du propriétaire.
+- `TrajetService` — consultation, publication, modification et annulation.
+- `ParticipationService` — réservation, consultation, annulation et validation.
+- `ClassementService` — calcul à partir des covoiturages validés.
 
-## Déjà développé
+## Règles à intégrer
 
-- [x] MCD et MLD corrigés et synchronisés.
-- [x] Logigramme de navigation.
-- [x] CRUD services d’entreprise.
-- [x] CRUD postes, chaque poste appartient à un service.
-- [x] CRUD horaires, chaque horaire appartient à un service.
-- [x] Swagger avec authentification Basic.
-- [x] Sécurité dev — GET salarié/admin, écritures admin.
-- [x] Tests services et postes.
+- Vérifier les droits sur les données de chaque salarié.
+- Vérifier les dates et la capacité du véhicule.
+- Empêcher le conducteur de réserver son propre trajet.
+- Éviter le dépassement des places, même avec des réservations simultanées.
+- Réutiliser une participation annulée lors d’une nouvelle réservation.
+- Gérer les participations lors de l’annulation d’un trajet.
+- Vérifier la cohérence service/poste/horaire.
+- Gérer les suppressions d’éléments encore utilisés.
+- Définir qui valide et comment calculer le classement.
 
-## Vérifications avant reprise
+## Intégrations restantes
 
-- [ ] Terminer les tests horaires.
-- [ ] Vérifier le PUT avec les vrais identifiants horaire/service.
-- [ ] Vérifier les derniers commits et le push sur `allan`.
+- Ajouter les filtres de recherche de trajets.
+- Intégrer géolocalisation conducteur et estimation de durée.
+- Finaliser le mécanisme de connexion avec Expo.
+- Prévoir la création initiale d’un compte ADMIN.
+- Tester les parcours complets et les droits après implémentation.
 
-## Backend restant
+## Authentification actuelle
 
-### Salariés
+- HTTP Basic avec les comptes de la table `salaries`.
+- Mot de passe BCrypt, rôle SALARIE ou ADMIN.
+- Anciens comptes de test en mémoire retirés.
+- Inscription publique, mais encore en 501.
+- `ConnexionRequest.java` actuellement inutilisé.
 
-- [ ] Entité, repository, DTO, service et controller.
-- [ ] Gestion des informations du salarié.
-- [ ] Affectation à un poste et à un horaire.
-- [ ] Modification du profil et contrôle des droits.
+## Vérifié
 
-### Authentification
+- Compilation et démarrage.
+- Swagger accessible.
+- Routes protégées refusées sans connexion.
+- Validation des champs obligatoires de l’inscription.
 
-- [ ] Remplacer les comptes en mémoire par les salariés en BDD.
-- [ ] Inscription avec e-mail unique et mot de passe haché.
-- [ ] Connexion et authentification adaptée à Expo.
-- [ ] Gestion des rôles SALARIE et ADMIN.
-- [ ] Empêcher l’attribution du rôle ADMIN depuis l’inscription.
+## Encore à vérifier
 
-### Véhicules
-
-- [ ] CRUD et rattachement au propriétaire.
-- [ ] Marque, modèle et nombre de places passagers.
-- [ ] Autoriser le propriétaire à gérer ses véhicules.
-
-### Trajets
-
-- [ ] CRUD et rattachement au conducteur et au véhicule.
-- [ ] Adresses et coordonnées de départ/arrivée.
-- [ ] Dates, heures, places proposées et statuts.
-- [ ] Géolocalisation obligatoire dans le parcours conducteur.
-- [ ] Estimation de la durée via un service d’itinéraire.
-- [ ] Recherche par départ, arrivée, date et horaires.
-- [ ] Modification et annulation des trajets.
-
-### Participations
-
-- [ ] Réservation d’une place par un salarié.
-- [ ] Liste des réservations du salarié.
-- [ ] Liste des passagers d’un trajet.
-- [ ] Annulation et validation après le trajet.
-- [ ] Empêcher les doubles réservations.
-- [ ] Empêcher le conducteur de réserver son propre trajet.
-- [ ] Gérer les réservations simultanées sans dépasser les places.
-- [ ] Gérer les participations lorsqu’un trajet est annulé.
-
-### Classement
-
-- [ ] Définir le calcul et les salariés récompensés.
-- [ ] Calculer à partir des covoiturages validés.
-- [ ] Exposer une route pour consulter le classement.
-
-### Finalisation
-
-- [ ] Compléter les règles dans SecurityConfig.
-- [ ] Vérifier les droits sur chaque ressource.
-- [ ] Gérer les doublons de postes avec une réponse 409.
-- [ ] Gérer les suppressions d’éléments encore utilisés.
-- [ ] Tester les cas métier et les erreurs.
-- [ ] Connecter l’application Expo à l’API.
-
-## Règles à préciser
-
-- Qui valide une participation après le trajet.
-- Calcul du classement.
-- Qui affecte et modifie les postes/horaires des salariés.
-- Effet d’une modification ou suppression sur les données liées.
-
-## Lancement
-
-Depuis la racine.
-
-    docker compose up -d db
-
-Depuis `backend`.
-
-    .\mvnw.cmd spring-boot:run "-Dspring-boot.run.profiles=dev"
-
-Swagger.
-
-    http://localhost:8080/swagger-ui/index.html
-
-## Comptes de test — profil dev
-
-- Admin — admin@covoiturage.test / AdminDev123!
-- Salarié — salarie@covoiturage.test / SalarieDev123!
-
-## Points à connaître
-
-- Comptes de test stockés en mémoire.
-- Tables créées/mises à jour par Hibernate, sans migrations.
-- Horaires de nuit acceptés, heures de début et fin identiques refusées.
-- Packages encore à implémenter à partir des fichiers vierges.
-- Utiliser les vrais identifiants de la BDD dans Swagger.
+- Connexion avec des comptes BDD.
+- Droits salarié/admin.
+- Contraintes SQL et réponses d’erreur.
+- Fonctionnement complet après implémentation des services.
